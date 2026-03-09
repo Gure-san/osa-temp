@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>On-site Attendance</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:40px;
+    background:#f5f5f5;
+}
+
+h1{
+    text-align:center;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+
+th,td{
+    border:1px solid #ccc;
+    padding:8px;
+}
+
+th{
+    background:#eee;
+}
+
+.controls{
+    margin:15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+button{
+    padding:8px 14px;
+    cursor:pointer;
+}
+
+textarea{
+    width:100%;
+    height:260px;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>On-site Attendance</h1>
+
+<div class="controls">
+<button onclick="checkAll()">Check Semua</button>
+<button onclick="uncheckAll()">Uncheck Semua</button>
+<button onclick="generateAttendance()">Generate Presensi</button>
+<button onclick="copyResult()">Copy Text</button>
+</div>
+
+<table id="studentTable">
+<thead>
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>NIM</th>
+<th>Hadir</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<h3>Hasil Presensi</h3>
+<textarea id="result"></textarea>
+
+<script>
+
+const mahasiswa=[
+{nama:"Abdul Aziz",nim:"2579202008"},
+{nama:"Siti Aisah Torina",nim:"2579202009"},
+{nama:"Rani Kristin Ulina",nim:"2579202020"},
+{nama:"Tee Nathaniel Aurelio Flamma",nim:"2579202021"},
+{nama:"Firda Rahmadanti Kusuma Putri",nim:"2579202024"},
+{nama:"Abdulloh Umarul Chafidz",nim:"2579202022"},
+{nama:"Angel Britania Tan T.",nim:"2579202018"},
+{nama:"Nadya O. Liu",nim:"2579202019"},
+{nama:"Helly Wahyuni Jola",nim:"2579202015"},
+{nama:"Yulia Galu Rengu",nim:"2579202013"},
+{nama:"Jelita Ester Saingo",nim:"2579202030"},
+{nama:"Marsalina Rege",nim:"2579202014"},
+{nama:"Esniana Ina Kabba",nim:"2579202010"},
+{nama:"Meliati Goro",nim:"2579202032"},
+{nama:"Noviana Kamuri",nim:"2579202031"},
+{nama:"Marlince Pade",nim:"2579202017"},
+{nama:"Oktavianus Leba",nim:"2579202005"},
+{nama:"Marselinus Nunu Huka",nim:"2579202006"},
+{nama:"Elsita Lisna Wati Bolu",nim:"2579202034"},
+{nama:"Rajiman",nim:"2579202033"},
+{nama:"Esther Jessica Sitohang",nim:"2579202037"},
+{nama:"Gracia Christania Sepang",nim:"2579202036"},
+{nama:"Meliana Laka Doro",nim:"2579202035"},
+{nama:"Jesica Pratiwi Putri",nim:"2579202023"},
+{nama:"Susanto",nim:"2579202026"},
+{nama:"Taufik Abdinegar Ridwan",nim:"2579202039"},
+{nama:"Nur Laili Fitria",nim:"2579202011"},
+{nama:"Niardillah Tangko",nim:"2579202020"},
+{nama:"Hermus Itlay",nim:"2579202016"},
+{nama:"Talita Neyser Tahun",nim:null},
+{nama:"Alvin Rin",nim:null}
+];
+
+function renderTable(){
+
+const tbody=document.querySelector("#studentTable tbody");
+
+mahasiswa.forEach((m,i)=>{
+
+const tr=document.createElement("tr");
+
+tr.innerHTML=`
+<td>${i+1}</td>
+<td>${m.nama}</td>
+<td>${m.nim ?? "-"}</td>
+<td><input type="checkbox" class="check"></td>
+`;
+
+tbody.appendChild(tr);
+
+});
+
+}
+
+function checkAll(){
+document.querySelectorAll(".check").forEach(c=>c.checked=true);
+}
+
+function uncheckAll(){
+document.querySelectorAll(".check").forEach(c=>c.checked=false);
+}
+
+function generateAttendance(){
+
+const checks=document.querySelectorAll(".check");
+
+let hadir=[];
+let tidakHadir=[];
+
+checks.forEach((c,i)=>{
+
+const m=mahasiswa[i];
+
+if(c.checked){
+
+if(m.nim){
+hadir.push(`${m.nama} -- ${m.nim}`);
+}else{
+hadir.push(`${m.nama}`);
+}
+
+}else{
+
+if(m.nim){
+tidakHadir.push(`${m.nama} -- ${m.nim}`);
+}else{
+tidakHadir.push(`${m.nama}`);
+}
+
+}
+
+});
+
+let output="";
+
+output+="# Daftar mahasiswa yang hadir\n";
+
+hadir.forEach((n,i)=>{
+output+=`${i+1}. ${n}\n`;
+});
+
+output+="\n# Daftar mahasiswa yang tidak hadir\n";
+
+tidakHadir.forEach((n,i)=>{
+output+=`${i+1}. ${n}\n`;
+});
+
+document.getElementById("result").value=output;
+
+}
+
+function copyResult(){
+
+const textarea=document.getElementById("result");
+
+textarea.select();
+document.execCommand("copy");
+
+alert("Text berhasil disalin");
+
+}
+
+renderTable();
+
+</script>
+
+</body>
+</html>
