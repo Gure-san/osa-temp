@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>On-site Attendance</title>
 
 <style>
@@ -38,6 +39,9 @@ th{
 }
 
 button{
+    display: inline-flex;
+    max-width: max-content;
+    height: auto;
     padding:8px 14px;
     cursor:pointer;
 }
@@ -47,6 +51,39 @@ textarea{
     height:260px;
     margin-top:10px;
 }
+
+  @media (max-width: 768px){
+
+body{
+    margin:16px;
+}
+
+h1{
+    font-size:22px;
+}
+
+button{
+    width:100%;
+}
+
+/* table bisa di-scroll horizontal di HP */
+table{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+}
+
+th,td{
+    font-size:14px;
+    padding:6px;
+}
+
+textarea{
+    height:220px;
+}
+
+}
+  
 </style>
 </head>
 
